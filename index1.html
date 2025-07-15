@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>日本人ならわかるはずクイズ｜日本文化・マナー検定</title>
+  <meta name="description" content="日本人なら簡単だけど意外と間違える常識・マナークイズ！正解数に応じて日本人度を診断。10問挑戦しよう！">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- OGP設定（SNSシェア用） -->
+  <meta property="og:title" content="日本人ならわかるはずクイズ">
+  <meta property="og:description" content="あなたの日本人度を診断！常識・マナー・文化のクイズに挑戦しよう。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://example.com/ogp.jpg"> <!-- 任意の画像URL -->
+
+  <style>
+    body {
+      font-family: 'Hiragino Mincho ProN', serif;
+      text-align: center;
+      background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      margin-top: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 26px;
+      color: #b22222;
+      margin-bottom: 10px;
+    }
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #f5f5f5;
+      transition: 0.2s;
+    }
+    .answers button:hover {
+      background: #ffe4e1;
+    }
+    .result {
+      font-size: 22px;
+      margin-top: 20px;
+    }
+    .share-buttons {
+      margin-top: 20px;
+    }
+    .share-buttons a {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 15px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .twitter { background: #1da1f2; }
+    .line { background: #00c300; }
+    .facebook { background: #3b5998; }
+
+    /* 正解・不正解エフェクト */
+    .correct {
+      animation: flash-green 0.5s ease;
+    }
+    .wrong {
+      animation: flash-red 0.5s ease;
+    }
+    @keyframes flash-green {
+      0% { background-color: #d4edda; }
+      100% { background-color: white; }
+    }
+    @keyframes flash-red {
+      0% { background-color: #f8d7da; }
+      100% { background-color: white; }
+    }
+
+    /* 広告エリア */
+    .ad-area {
+      background: #eee;
+      padding: 15px;
+      margin: 20px 0;
+      border: 1px dashed #999;
+    }
+
+    /* スマホ対応 */
+    @media (max-width: 600px) {
+      .container { margin: 15px; padding: 15px; }
+      h1 { font-size: 22px; }
+      .question { font-size: 18px; }
+      .answers button { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>日本人ならわかるはずクイズ</h1>
+    <div id="quiz-area">
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+    </div>
+
+    <!-- 広告表示ポイント -->
+    <div class="ad-area" id="ad-area" style="display:none;">
+      ここに全画面広告やバナー広告を入れられます（AdSenseタグ挿入ポイント）
+    </div>
+
+    <div class="result" id="result"></div>
+    <div class="share-buttons" id="share-buttons" style="display:none;">
+      <a id="share-twitter" class="twitter" target="_blank">Xでシェア</a>
+      <a id="share-line" class="line" target="_blank">LINEで送る</a>
+      <a id="share-facebook" class="facebook" target="_blank">Facebookでシェア</a>
+    </div>
+  </div>
+
+  <script>
+    // クイズデータ（10問）
+    const quizData = [
+      { q: "「いただきます」の本来の意味は？", a: ["食べ物を作ってくれた人に感謝", "神様にお祈り", "お金を払う宣言"], correct: 0 },
+      { q: "日本の国鳥はどれ？", a: ["ツル", "キジ", "スズメ"], correct: 1 },
+      { q: "正しいお辞儀の角度は何度？", a: ["15度", "30度", "90度"], correct: 1 },
+      { q: "紅白歌合戦が始まったのは何年？", a: ["1945年", "1951年", "1964年"], correct: 1 },
+      { q: "お正月に食べるおせち料理の意味は？", a: ["新年の豊作祈願", "先祖へのお供え", "年末の残り物"], correct: 0 },
+      { q: "七五三のお祝いは何歳？", a: ["3・5・7歳", "4・6・8歳", "1・3・5歳"], correct: 0 },
+      { q: "日本の最北端の都道府県は？", a: ["青森県", "北海道", "秋田県"], correct: 1 },
+      { q: "富士山の標高は？", a: ["2,776m", "3,776m", "4,776m"], correct: 1 },
+      { q: "成人の日は何月？", a: ["1月", "4月", "5月"], correct: 0 },
+      { q: "お年玉の習慣はどこから来た？", a: ["お金を配る神事", "鏡餅のお供え", "お寺のお布施"], correct: 0 }
+    ];
+
+    let currentQuiz = 0;
+    let score = 0;
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const resultEl = document.getElementById("result");
+    const adArea = document.getElementById("ad-area");
+    const shareButtons = document.getElementById("share-buttons");
+
+    // シャッフル（毎回ランダム出題）
+    quizData.sort(() => Math.random() - 0.5);
+
+    function loadQuiz() {
+      if (currentQuiz < quizData.length) {
+        const q = quizData[currentQuiz];
+        questionEl.textContent = `Q${currentQuiz + 1}. ${q.q}`;
+        answersEl.innerHTML = "";
+        q.a.forEach((ans, idx) => {
+          const btn = document.createElement("button");
+          btn.textContent = ans;
+          btn.onclick = () => checkAnswer(idx, btn);
+          answersEl.appendChild(btn);
+        });
+      } else {
+        showResult();
+      }
+    }
+
+    function checkAnswer(selected, btn) {
+      const q = quizData[currentQuiz];
+      if (selected === q.correct) {
+        score++;
+        btn.classList.add("correct");
+      } else {
+        btn.classList.add("wrong");
+      }
+      currentQuiz++;
+
+      // 3問ごとに広告を表示するイメージ
+      if (currentQuiz % 3 === 0 && currentQuiz < quizData.length) {
+        adArea.style.display = "block";
+        setTimeout(() => {
+          adArea.style.display = "none";
+          loadQuiz();
+        }, 2000); // 2秒表示のイメージ
+      } else {
+        setTimeout(loadQuiz, 500);
+      }
+    }
+
+    function showResult() {
+      questionEl.style.display = "none";
+      answersEl.style.display = "none";
+      adArea.style.display = "none";
+
+      const percent = Math.round((score / quizData.length) * 100);
+      let title = "";
+      if (percent === 100) title = "まさに日本文化マスター！";
+      else if (percent >= 80) title = "かなりの日本通！";
+      else if (percent >= 50) title = "そこそこ日本人度あり";
+      else title = "もっと日本のことを学ぼう！";
+
+      resultEl.innerHTML = `あなたの正解数は ${score}/${quizData.length}問<br><strong>${percent}%：${title}</strong>`;
+
+      // シェアリンク生成
+      const shareText = `私は「日本人ならわかるはずクイズ」で${percent}%でした！あなたも挑戦してみて👇`;
+      const shareUrl = window.location.href;
+      document.getElementById("share-twitter").href =
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+      document.getElementById("share-line").href =
+        `https://line.me/R/msg/text/?${encodeURIComponent(shareText + " " + shareUrl)}`;
+      document.getElementById("share-facebook").href =
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+
+      shareButtons.style.display = "block";
+    }
+
+    loadQuiz();
+  </script>
+
+</body>
+</html>
